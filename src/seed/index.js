@@ -13,7 +13,9 @@ const runSeed = async () => {
       await Admin.create({ name: 'Hassan Noor', email: adminEmail, password: hashed, role: 'admin' })
       console.log(`Admin created: ${adminEmail}`)
     } else {
-      console.log('Admin already exists.')
+      exists.password = await bcrypt.hash(adminPass, 12)
+      await exists.save()
+      console.log('Admin already exists. Password synced.')
     }
 
     const settingsExists = await Settings.findOne({ singleton: true })
