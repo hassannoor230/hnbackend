@@ -20,6 +20,8 @@ export const authenticate = async (req, res, next) => {
   }
 }
 
+export const protect = authenticate
+
 export const requireRole = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.admin?.role)) {
@@ -28,6 +30,8 @@ export const requireRole = (...roles) => {
     next()
   }
 }
+
+export const requireAdmin = requireRole('admin')
 
 export const optionalAuth = async (req, res, next) => {
   try {

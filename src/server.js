@@ -53,9 +53,20 @@ if (env.nodeEnv === 'production') {
   app.use(express.static(distPath))
 }
 
+app.get('/api', (req, res) => {
+  res.json({ success: true, message: 'Portfolio API is running' })
+})
+
+app.get('/api/health', (req, res) => res.json({
+  success: true,
+  status: 'ok',
+  database: 'connected',
+  env: env.nodeEnv,
+}))
+
 app.use('/api', apiLimiter, routes)
 
-app.get('/health', (req, res) => res.json({ status: 'ok', env: env.nodeEnv }))
+app.get('/health', (req, res) => res.json({ success: true, status: 'ok', database: 'connected', env: env.nodeEnv }))
 
 // 404
 app.use('*', (req, res) => {
