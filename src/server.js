@@ -15,12 +15,27 @@ import { apiLimiter } from './middleware/rateLimit.js'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const app = express()
+const allowedOrigins = new Set([
+  ...(env.clientUrls || [env.clientUrl]),
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  'https://hassan-noor.vercel.app',
+].filter(Boolean))
 
 if (env.nodeEnv === 'development') app.use(morgan('dev'))
 app.use(compression())
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(cors({
-  origin: env.clientUrl,
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) {
+      callback(null, true)
+      return
+    }
+
+    callback(new Error(`CORS policy: origin ${origin} is not allowed`))
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

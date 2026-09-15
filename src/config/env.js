@@ -1,6 +1,16 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
+const parseClientUrls = () => {
+  const raw = process.env.CLIENT_URL || process.env.CLIENT_URLS || 'http://localhost:5173'
+  return [...new Set(
+    raw
+      .split(',')
+      .map((url) => url.trim())
+      .filter(Boolean)
+  )]
+}
+
 export const env = {
   port: process.env.PORT || 5000,
   mongoUri: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/hassan_portfolio',
@@ -20,7 +30,8 @@ export const env = {
     from: process.env.EMAIL_FROM || 'Hassan Noor <noreply@hassannoor.dev>',
     to: process.env.EMAIL_TO || 'hassannoor2309@gmail.com',
   },
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  clientUrl: parseClientUrls()[0] || 'http://localhost:5173',
+  clientUrls: parseClientUrls(),
   nodeEnv: process.env.NODE_ENV || 'development',
 }
 
