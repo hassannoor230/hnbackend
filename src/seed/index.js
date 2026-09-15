@@ -7,6 +7,7 @@ const runSeed = async () => {
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@hassannoor.dev'
     const adminPass = process.env.ADMIN_PASSWORD || 'Admin@123456'
     const exists = await Admin.findOne({ email: adminEmail })
+
     if (!exists) {
       await Admin.create({ name: 'Hassan Noor', email: adminEmail, password: adminPass, role: 'admin' })
       console.log(`Admin created: ${adminEmail}`)
@@ -40,6 +41,17 @@ const runSeed = async () => {
   } catch (err) {
     console.error('Seed error:', err.message)
   }
+}
+
+const isDirectRun = process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href
+
+if (isDirectRun) {
+  connectDB()
+    .then(() => runSeed())
+    .catch((err) => {
+      console.error('Seed bootstrap failed:', err.message)
+      process.exit(1)
+    })
 }
 
 export default runSeed
