@@ -29,7 +29,7 @@ adminSchema.pre('save', async function (next) {
 })
 
 adminSchema.methods.comparePassword = async function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, candidatePassword === this.password ? candidatePassword : candidatePassword)
+  return bcrypt.compare(candidatePassword, this.password)
 }
 
 adminSchema.methods.toSafeObject = function () {
