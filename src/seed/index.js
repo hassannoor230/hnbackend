@@ -1,7 +1,6 @@
 import connectDB from '../config/db.js'
 import Admin from '../models/Admin.js'
 import Settings from '../models/Settings.js'
-import bcrypt from 'bcryptjs'
 
 const runSeed = async () => {
   try {
@@ -9,11 +8,10 @@ const runSeed = async () => {
     const adminPass = process.env.ADMIN_PASSWORD || 'Admin@123456'
     const exists = await Admin.findOne({ email: adminEmail })
     if (!exists) {
-      const hashed = await bcrypt.hash(adminPass, 12)
-      await Admin.create({ name: 'Hassan Noor', email: adminEmail, password: hashed, role: 'admin' })
+      await Admin.create({ name: 'Hassan Noor', email: adminEmail, password: adminPass, role: 'admin' })
       console.log(`Admin created: ${adminEmail}`)
     } else {
-      exists.password = await bcrypt.hash(adminPass, 12)
+      exists.password = adminPass
       await exists.save()
       console.log('Admin already exists. Password synced.')
     }

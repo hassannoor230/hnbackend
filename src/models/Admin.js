@@ -24,6 +24,10 @@ const adminSchema = new mongoose.Schema(
 
 adminSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next()
+
+  const isBcryptHash = typeof this.password === 'string' && /^\$2[aby]\$/.test(this.password)
+  if (isBcryptHash) return next()
+
   this.password = await bcrypt.hash(this.password, 12)
   next()
 })
