@@ -53,37 +53,37 @@ import authRoutes from './auth.js'
 router.use('/auth', authRoutes)
 
 // ─── Protected admin routes ────────────────────────
-router.post('/upload', uploadLimiter, upload, handleUpload, uploadImage)
-router.post('/upload/settings', uploadLimiter, upload, handleUpload, settingsUpload)
+router.post('/upload', uploadLimiter, handleUpload, uploadImage)
+router.post('/upload/settings', uploadLimiter, handleUpload, settingsUpload)
 
 router.get('/admin/projects', authenticate, projectCrud.list)
 router.post('/admin/projects', authenticate, projectValidation, projectCrud.create)
 router.put('/admin/projects/:id', authenticate, projectValidation, projectCrud.update)
-router.delete('/admin/projects/:id', authenticate, projectCrud.delete)
-router.post('/admin/projects/:id/upload', authenticate, uploadLimiter, upload, handleUpload, uploadImage)
+router.delete('/admin/projects/:id', authenticate, projectCrud.remove)
+router.post('/admin/projects/:id/upload', authenticate, uploadLimiter, handleUpload, uploadImage)
 
 router.get('/admin/skills', authenticate, skillCrud.list)
 router.post('/admin/skills', authenticate, skillValidation, skillCrud.create)
 router.put('/admin/skills/:id', authenticate, skillValidation, skillCrud.update)
-router.delete('/admin/skills/:id', authenticate, skillCrud.delete)
+router.delete('/admin/skills/:id', authenticate, skillCrud.remove)
 router.put('/admin/skills/reorder', authenticate, skillReorder)
 
 router.get('/admin/experience', authenticate, expCrud.list)
 router.post('/admin/experience', authenticate, experienceValidation, expCrud.create)
 router.put('/admin/experience/:id', authenticate, experienceValidation, expCrud.update)
-router.delete('/admin/experience/:id', authenticate, expCrud.delete)
+router.delete('/admin/experience/:id', authenticate, expCrud.remove)
 router.put('/admin/experience/reorder', authenticate, expReorder)
 
 router.get('/admin/education', authenticate, eduCrud.list)
 router.post('/admin/education', authenticate, educationValidation, eduCrud.create)
 router.put('/admin/education/:id', authenticate, educationValidation, eduCrud.update)
-router.delete('/admin/education/:id', authenticate, eduCrud.delete)
+router.delete('/admin/education/:id', authenticate, eduCrud.remove)
 router.put('/admin/education/reorder', authenticate, eduReorder)
 
 router.get('/admin/testimonials', authenticate, testimonialCrud.list)
 router.post('/admin/testimonials', authenticate, testimonialValidation, testimonialCrud.create)
 router.put('/admin/testimonials/:id', authenticate, testimonialValidation, testimonialCrud.update)
-router.delete('/admin/testimonials/:id', authenticate, testimonialCrud.delete)
+router.delete('/admin/testimonials/:id', authenticate, testimonialCrud.remove)
 router.put('/admin/testimonials/reorder', authenticate, testimonialReorder)
 
 router.get('/admin/inquiries', authenticate, inquiryList)
@@ -93,15 +93,15 @@ router.put('/admin/inquiries/:id', authenticate, inquiryUpdate)
 router.delete('/admin/inquiries/:id', authenticate, inquiryRemove)
 
 router.get('/admin/resume', authenticate, resumeCrud.list)
-router.post('/admin/resume', authenticate, uploadLimiter, upload, handleUpload, resumeUpload)
+router.post('/admin/resume', authenticate, uploadLimiter, handleUpload, resumeUpload)
 router.put('/admin/resume/:id', authenticate, resumeCrud.update)
-router.delete('/admin/resume/:id', authenticate, resumeCrud.delete)
+router.delete('/admin/resume/:id', authenticate, resumeCrud.remove)
 router.put('/admin/resume/:id/active', authenticate, setActive)
 
 router.get('/admin/blog', authenticate, blogCrud.list)
 router.post('/admin/blog', authenticate, blogValidation, blogCrud.create)
 router.put('/admin/blog/:id', authenticate, blogValidation, blogCrud.update)
-router.delete('/admin/blog/:id', authenticate, blogCrud.delete)
+router.delete('/admin/blog/:id', authenticate, blogCrud.remove)
 
 router.get('/admin/analytics/overview', authenticate, overview)
 

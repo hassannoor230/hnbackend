@@ -29,6 +29,35 @@ export const overview = async (req, res) => {
   }
 }
 
+export const analyticsSummary = async (req, res) => {
+  try {
+    const [visitorsAgg, pageViewsAgg, inquiries, pages] = await Promise.all([
+      Analytics.aggregate([{ $group: { _id: null, totalVisitors: { $sum: 1 } } }]),
+      Analytics.aggregate([{ $group: { _id: null, totalViews: { $sum: 1 } } }]),
+      Inquiry.countDocuments(),
+      Analytics.aggregate([
+        { $group: { _id: '$path', views: { $sum: 1 } } },
+        { $sort: { views: -1 } },
+        { $limit: 10 },
+      ]),
+    ])
+    const totalVisitors = visitorsAgg[0]?.totalVisitors || 0
+    const totalPageViews = pageViewsAgg[0]?.totalViews || 0
+    res.json({
+      success: true,
+      data: {
+        totalVisitors,
+        totalPageViews,
+        totalInquiries: inquiries,
+        conversionRate: totalVisitors ? ((inquiries / totalVisitors) * 100).toFixed(1) : '0',
+        topPages: pages,
+      },
+    })
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Internal server error.' })
+  }
+}
+
 export const projectViews = async (req, res) => {
   try {
     const items = await Project.find({ published: true }).sort({ views: -1 }).limit(10).select('title views slug')

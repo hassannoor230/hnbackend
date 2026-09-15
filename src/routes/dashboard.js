@@ -8,7 +8,7 @@ import { crud as testimonialCrud } from '../controllers/testimonialController.js
 import { crud as blogCrud } from '../controllers/blogController.js'
 import { crud as resumeCrud } from '../controllers/resumeController.js'
 import { list as inquiryList, stats as inquiryStats } from '../controllers/inquiryController.js'
-import { overview, projectViews, traffic, topPages } from '../controllers/analyticsController.js'
+import { overview, projectViews, traffic, topPages, analyticsSummary } from '../controllers/analyticsController.js'
 import { get as settingsGet, update as settingsUpdate } from '../controllers/settingsController.js'
 
 const router = Router()
@@ -24,6 +24,7 @@ router.get('/blog', blogCrud.list)
 router.get('/resume', resumeCrud.list)
 router.get('/inquiries', inquiryList)
 router.get('/inquiries/stats', inquiryStats)
+router.get('/analytics', analyticsSummary)
 router.get('/analytics/traffic', traffic)
 router.get('/analytics/top-pages', topPages)
 router.get('/analytics/projects', projectViews)

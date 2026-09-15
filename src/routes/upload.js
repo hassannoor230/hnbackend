@@ -7,7 +7,7 @@ import { uploadImage as settingsUpload } from '../controllers/settingsController
 const router = Router()
 
 // Legacy upload endpoints (kept for compatibility)
-router.post('/upload', authenticate, upload, handleUpload, projectUpload)
-router.post('/upload/settings', authenticate, upload, handleUpload, settingsUpload)
+router.post('/upload', authenticate, handleUpload, projectUpload)
+router.post('/upload/settings', authenticate, handleUpload, settingsUpload)
 
 export default router

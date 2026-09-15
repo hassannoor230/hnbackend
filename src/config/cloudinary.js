@@ -1,4 +1,4 @@
-import cloudinary from 'cloudinary/v2'
+import cloudinary from 'cloudinary'
 import { env } from './env.js'
 
 if (env.cloudinary.cloudName) {
